@@ -49,13 +49,15 @@ namespace NetWCF.Client
 
         private static void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Console.WriteLine(WcfClient.SayHello("我说的是：" + Index++));
+            Console.WriteLine(WcfClient.SayHello("我说的是：" + Index++, Index++));
         }
     }
 
     public class WcfClient
     {
-        private static readonly string URL = "net.tcp://10.1.2.102:8083/Hello";
+        private static readonly string URL = "net.tcp://10.1.2.85:8083/Hello";
+
+        private static readonly string URL_User = "net.tcp://10.1.2.85:8083/User";
         //private static IHello proxy;
         public static IHello CreateHello()
         {
@@ -72,11 +74,29 @@ namespace NetWCF.Client
                 Console.WriteLine(ex.ToString());
                 return null;
             }
-
         }
 
-        public static string SayHello(string say)
+        public static IUser CreateUser()
         {
+            try
+            {
+                NetTcpBinding tcpBinding = new NetTcpBinding();
+                EndpointAddress tcpAddr = new EndpointAddress(URL_User);
+                tcpBinding.Security.Mode = SecurityMode.None;//与服务端保持一致
+                IUser proxy = new ChannelFactory<IUser>(tcpBinding, tcpAddr).CreateChannel();
+                return proxy;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public static string SayHello(string say, int index)
+        {
+            TestEntity e = CreateUser().GetEntity(index);
+            Console.WriteLine(e.Name);
             return CreateHello().SayHello(say);
         }
     }

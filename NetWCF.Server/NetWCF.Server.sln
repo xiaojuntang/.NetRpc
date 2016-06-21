@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWCF.Client", "NetWCF.Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWCF.Impl", "NetWCF.Impl\NetWCF.Impl.csproj", "{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWCF.ConfTestServer", "NetWCF.ConfTestServer\NetWCF.ConfTestServer.csproj", "{8E843331-9656-45DE-B080-C4954E3F2DA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E843331-9656-45DE-B080-C4954E3F2DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E843331-9656-45DE-B080-C4954E3F2DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E843331-9656-45DE-B080-C4954E3F2DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E843331-9656-45DE-B080-C4954E3F2DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

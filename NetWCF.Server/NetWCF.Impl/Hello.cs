@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetWCF.Impl
 {
-    public class Hello : IHello
+    public partial class Hello : IHello
     {
         public string SayHello(string name)
         {

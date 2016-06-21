@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetWCF.Impl;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -14,7 +15,6 @@ namespace NetWCF.Server
             using (MyHelloHost host = new MyHelloHost())
             {
                 host.Open();
-
                 Console.ReadLine();
             }
         }
@@ -29,25 +29,11 @@ namespace NetWCF.Server
         /// <summary>
         /// 定义一个基地址
         /// </summary>
-        public const string BaseAddress = "net.tcp://10.1.2.102:8083";//"net.pipe://192.168.160.25";
+        public const string BaseAddress = "net.tcp://10.1.2.85:8083";
         /// <summary>
-        /// 可选地址
+        /// 通讯协议
         /// </summary>
-        //public const string UserServiceAddress = "UserSerivce";
-        /// <summary>
-        /// 服务契约实现类型
-        /// </summary>
-        public static readonly Type ServiceType = typeof(NetWCF.Impl.Hello);
-        /// <summary>
-        /// 服务契约接口
-        /// </summary>
-        public static readonly Type ContractType = typeof(NetWCF.Impl.IHello);
-        /// <summary>
-        /// 使用的协议
-        /// </summary>
-        //public static readonly Binding binding = new NetNamedPipeBinding();
-        //public static readonly BasicHttpBinding binding = new BasicHttpBinding();
-        public static readonly NetTcpBinding netTcpBinding = new NetTcpBinding();
+        private static NetTcpBinding netTcpBinding = new NetTcpBinding();
 
         public ServiceHost Myhost
         {
@@ -59,17 +45,15 @@ namespace NetWCF.Server
 
         public MyHelloHost()
         {
-            CreateHelloServiceHost();
-        }
-
-        protected void CreateHelloServiceHost()
-        {
-            //binding.Name = "httpbing";
-            //binding.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard;
-            //binding.Security.Mode = BasicHttpSecurityMode.None;
             netTcpBinding.Security.Mode = SecurityMode.None;
-            _myhost = new ServiceHost(ServiceType, new Uri[] { new Uri(BaseAddress) });
-            _myhost.AddServiceEndpoint(ContractType, netTcpBinding, "Hello");
+            _myhost = new ServiceHost(typeof(Hello), new Uri[] { new Uri(BaseAddress) });
+            CreateServiceHost();
+        }
+        
+        private void CreateServiceHost()
+        {
+            _myhost.AddServiceEndpoint(typeof(IHello), netTcpBinding, "Hello");
+            _myhost.AddServiceEndpoint(typeof(IUser), netTcpBinding, "User");
         }
 
         /// <summary>
