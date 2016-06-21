@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWCF.Server", "NetWCF.Server\NetWCF.Server.csproj", "{F77C1059-4382-4D48-96C7-0A0A10A3A722}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWCF.Client", "NetWCF.Client\NetWCF.Client.csproj", "{43B0B0ED-EBAE-4A6D-B02E-DF7F41D29FAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWCF.Impl", "NetWCF.Impl\NetWCF.Impl.csproj", "{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F77C1059-4382-4D48-96C7-0A0A10A3A722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77C1059-4382-4D48-96C7-0A0A10A3A722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77C1059-4382-4D48-96C7-0A0A10A3A722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77C1059-4382-4D48-96C7-0A0A10A3A722}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43B0B0ED-EBAE-4A6D-B02E-DF7F41D29FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43B0B0ED-EBAE-4A6D-B02E-DF7F41D29FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43B0B0ED-EBAE-4A6D-B02E-DF7F41D29FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43B0B0ED-EBAE-4A6D-B02E-DF7F41D29FAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF2ADC23-FC17-48FD-84C6-91ECAD0BEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
