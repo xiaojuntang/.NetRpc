@@ -11,7 +11,7 @@ namespace NetWCF.Impl
     public interface IHello
     {
         [OperationContract]
-        string SayHello(string name);
+        string SayHello(string name, int index, int tId);
 
         [OperationContract(Name = "SayHelloBySex")]
         string SayHello(string name, string sex);

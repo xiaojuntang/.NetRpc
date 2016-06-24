@@ -8,9 +8,10 @@ namespace NetWCF.Impl
 {
     public partial class Hello : IHello
     {
-        public string SayHello(string name)
+        public string SayHello(string name, int index, int tId)
         {
-            Console.WriteLine("收到请求：" + name);
+            string msg = string.Format("服务器已经收到第{0}个请求,并处理完毕。当前时间：{1} 线程ID;{2}", index, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), tId);
+            Console.WriteLine(msg);
             return "SayHello " + name;
         }
 

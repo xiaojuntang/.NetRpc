@@ -5,6 +5,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NetWCF.Client
@@ -17,6 +18,52 @@ namespace NetWCF.Client
 
         static void Main(string[] args)
         {
+            try
+            {
+                NetTcpBinding tcpBinding = new NetTcpBinding();
+                EndpointAddress tcpAddr = new EndpointAddress("net.tcp://10.1.2.102:8083/Hello");
+                tcpBinding.Security.Mode = SecurityMode.None;//与服务端保持一致
+                IHello proxy = new ChannelFactory<IHello>(tcpBinding, tcpAddr).CreateChannel();
+                int index = 1;
+                for (int i = 0; i < 20000; i++)
+                {
+                    try
+                    {
+                        Task.Factory.StartNew((obj) =>
+                        {
+                            try
+                            {
+
+
+                                Console.WriteLine("第 {0} 个请求开始。。。", obj);
+                                Parallel.For(0, 3, o =>
+                                {
+                                    proxy.SayHello("12312", index++, Thread.CurrentThread.ManagedThreadId);
+                                });
+
+
+                                Console.WriteLine("第 {0} 个请求结束。。。", obj);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }, i);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+
+                Console.Read();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            //----------------------------------------------------------------------------------
             //定义绑定与服务地址 
             //Binding httpBinding = new BasicHttpBinding();
             //EndpointAddress httpAddr = new EndpointAddress("http://localhost:8080/wcf");
@@ -41,9 +88,13 @@ namespace NetWCF.Client
             //}
 
             //((IChannel)proxy2).Close();
-            _timer.Interval = 100;
-            _timer.Elapsed += _timer_Elapsed;
-            _timer.Start();
+
+            //----------------------------------------------------------------------------------
+
+
+            //_timer.Interval = 100;
+            //_timer.Elapsed += _timer_Elapsed;
+            //_timer.Start();
             Console.ReadLine();
         }
 
@@ -97,7 +148,7 @@ namespace NetWCF.Client
         {
             TestEntity e = CreateUser().GetEntity(index);
             Console.WriteLine(e.Name);
-            return CreateHello().SayHello(say);
+            return "";// CreateHello().SayHello(say);
         }
     }
 }

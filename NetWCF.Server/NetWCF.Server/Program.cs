@@ -29,7 +29,7 @@ namespace NetWCF.Server
         /// <summary>
         /// 定义一个基地址
         /// </summary>
-        public const string BaseAddress = "net.tcp://10.1.2.85:8083";
+        public const string BaseAddress = "net.tcp://10.1.2.102:8083";
         /// <summary>
         /// 通讯协议
         /// </summary>
