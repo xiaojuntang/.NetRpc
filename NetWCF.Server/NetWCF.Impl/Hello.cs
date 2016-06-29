@@ -17,6 +17,8 @@ namespace NetWCF.Impl
 
         public string SayHello(string name, string sex)
         {
+            string msg = string.Format("服务器已经收到第{0}个请求,并处理完毕。当前时间：{1} 线程ID;{2}", name, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), sex);
+            Console.WriteLine(msg);
             return "SayHelloSex " + name + sex;
         }
     }

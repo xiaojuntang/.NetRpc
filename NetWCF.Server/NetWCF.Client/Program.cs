@@ -21,7 +21,7 @@ namespace NetWCF.Client
             try
             {
                 NetTcpBinding tcpBinding = new NetTcpBinding();
-                EndpointAddress tcpAddr = new EndpointAddress("net.tcp://10.1.2.102:8083/Hello");
+                EndpointAddress tcpAddr = new EndpointAddress("net.tcp://192.168.187.1:8083/Hello");
                 tcpBinding.Security.Mode = SecurityMode.None;//与服务端保持一致
                 IHello proxy = new ChannelFactory<IHello>(tcpBinding, tcpAddr).CreateChannel();
                 int index = 1;
@@ -38,7 +38,7 @@ namespace NetWCF.Client
                                 Console.WriteLine("第 {0} 个请求开始。。。", obj);
                                 Parallel.For(0, 3, o =>
                                 {
-                                    proxy.SayHello("12312", index++, Thread.CurrentThread.ManagedThreadId);
+                                    RPCHelloClient.Say(index++.ToString(), Thread.CurrentThread.ManagedThreadId.ToString());
                                 });
 
 

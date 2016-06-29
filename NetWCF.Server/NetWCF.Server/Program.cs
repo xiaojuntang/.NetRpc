@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace NetWCF.Server
     {
         static void Main(string[] args)
         {
-            using (MyHelloHost host = new MyHelloHost())
+            using (ZxxkServiceHost host = new ZxxkServiceHost())
             {
                 host.Open();
                 Console.ReadLine();
@@ -20,40 +21,42 @@ namespace NetWCF.Server
         }
     }
 
-    public class MyHelloHost : IDisposable
+    public class ZxxkServiceHost : IDisposable
     {
         /// <summary>
         /// 定义一个服务对象
         /// </summary>
-        private ServiceHost _myhost;
-        /// <summary>
-        /// 定义一个基地址
-        /// </summary>
-        public const string BaseAddress = "net.tcp://10.1.2.102:8083";
-        /// <summary>
-        /// 通讯协议
-        /// </summary>
-        private static NetTcpBinding netTcpBinding = new NetTcpBinding();
+        private ServiceHost serviceHost;
 
-        public ServiceHost Myhost
+        public ZxxkServiceHost()
+        {
+            string ipAndPort = "192.168.187.1:8083";
+            //定义一个基地址
+            string baseAddress = string.Format("net.tcp://{0}", ipAndPort);
+            //通讯协议
+            NetTcpBinding netTcpBinding = new NetTcpBinding();
+            netTcpBinding.Security.Mode = SecurityMode.None;
+            serviceHost = new ServiceHost(typeof(Hello), new Uri[] { new Uri(baseAddress) });
+            serviceHost.AddServiceEndpoint(typeof(IHello), netTcpBinding, "Hello");
+            serviceHost.AddServiceEndpoint(typeof(IUser), netTcpBinding, "User");
+            //if (serviceHost.Description.Behaviors.Find<ServiceMetadataBehavior>() == null)
+            //{
+            //    ServiceMetadataBehavior metadata = new ServiceMetadataBehavior();
+            //    metadata.HttpGetEnabled = true;
+            //    metadata.HttpGetUrl = new Uri("http://192.168.187.1:8085/Hello/metadata");
+            //    serviceHost.Description.Behaviors.Add(metadata);
+            //}
+        }
+
+        /// <summary>
+        /// 服务对象
+        /// </summary>
+        public ServiceHost Host
         {
             get
             {
-                return _myhost;
+                return serviceHost;
             }
-        }
-
-        public MyHelloHost()
-        {
-            netTcpBinding.Security.Mode = SecurityMode.None;
-            _myhost = new ServiceHost(typeof(Hello), new Uri[] { new Uri(BaseAddress) });
-            CreateServiceHost();
-        }
-        
-        private void CreateServiceHost()
-        {
-            _myhost.AddServiceEndpoint(typeof(IHello), netTcpBinding, "Hello");
-            _myhost.AddServiceEndpoint(typeof(IUser), netTcpBinding, "User");
         }
 
         /// <summary>
@@ -61,9 +64,15 @@ namespace NetWCF.Server
         /// </summary>
         public void Open()
         {
-            Console.WriteLine("服务启动中……");
-            _myhost.Open();
-            Console.WriteLine("启动成功");
+            serviceHost.Opening += delegate
+            {
+                Console.WriteLine("服务启动……");
+            };
+            serviceHost.Open();
+            serviceHost.Opened += (a, b) =>
+            {
+                Console.WriteLine("启动成功");
+            };
         }
 
         /// <summary>
@@ -71,10 +80,62 @@ namespace NetWCF.Server
         /// </summary>
         public void Dispose()
         {
-            if (Myhost != null)
+            if (Host != null)
             {
-                (Myhost as IDisposable).Dispose();
+                (Host as IDisposable).Dispose();
             }
+        }
+    }
+
+    public class ICSFactory
+    {
+        /// <summary>
+        /// 创建WCF服务代理对象
+        /// </summary>
+        /// <typeparam name="T">WCF的Contract类型</typeparam>
+        /// <returns></returns>
+        public static T Create<T>()
+        {
+            string contractNamespace = typeof(T).Namespace;
+            string contract = typeof(T).Name;
+
+            //根据WCF Contract信息找到相应的位置信息
+            //Location location = ServiceLocator.Locate(contractNamespace, contract);
+
+            //生成绑定信息
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
+            binding.Security.Mode = SecurityMode.None;
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+
+            //事务设置
+            binding.TransactionFlow = true;
+            binding.TransactionProtocol = TransactionProtocol.OleTransactions;
+
+            //地址信息
+            EndpointAddress address = null;// new EndpointAddress(location.Url);
+
+            //建立信道
+            T broker = ChannelFactory<T>.CreateChannel(binding, address);
+
+            //返回代理对象
+            return broker;
+        }
+
+        /// <summary>
+        /// Dispose代理对象
+        /// </summary>
+        /// <param name="broker"></param>
+        public static void Close(object broker)
+        {
+            if (broker == null)
+                return;
+
+            IDisposable disposable = broker as IDisposable;
+            if (disposable == null)
+                return;
+
+            disposable.Dispose();
         }
     }
 }
