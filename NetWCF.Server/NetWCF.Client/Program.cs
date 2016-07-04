@@ -18,6 +18,22 @@ namespace NetWCF.Client
 
         static void Main(string[] args)
         {
+
+            int a = 5;
+
+            Task.Run(() =>
+            {
+                a = 10;
+            });
+            var d = "";
+            //第一种方式开启
+            var task1 = new Task(() =>
+                     {
+                         a = 9;
+                     });
+            task1.Start();
+            var c = "";
+
             try
             {
                 NetTcpBinding tcpBinding = new NetTcpBinding();

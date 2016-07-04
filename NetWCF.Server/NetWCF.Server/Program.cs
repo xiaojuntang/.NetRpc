@@ -13,11 +13,22 @@ namespace NetWCF.Server
     {
         static void Main(string[] args)
         {
-            using (ZxxkServiceHost host = new ZxxkServiceHost())
+
+            int a = 5;
+
+            Task.Run(() =>
             {
-                host.Open();
-                Console.ReadLine();
-            }
+                a = 10;
+            });
+            var d = "";
+            Console.WriteLine(a);
+            Console.ReadLine();
+
+            //using (ZxxkServiceHost host = new ZxxkServiceHost())
+            //{
+            //    host.Open();
+            //    Console.ReadLine();
+            //}
         }
     }
 
