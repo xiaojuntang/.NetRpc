@@ -19,6 +19,11 @@ namespace Zxxk.Ques.Core
             this.MsgEvent += Messages_MsgEvent;
         }
 
+        /// <summary>
+        /// 日志显示
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="method"></param>
         private void Messages_MsgEvent(string message, string method)
         {
             Console.WriteLine(message + "  My event is ok!");

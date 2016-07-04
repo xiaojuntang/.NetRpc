@@ -1,0 +1,717 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Common.Net.DbProvider</name>
+    </assembly>
+    <members>
+        <member name="T:Common.Net.DbProvider.CommandInfo">
+            <summary>
+            命令
+            </summary>
+        </member>
+        <member name="M:Common.Net.DbProvider.CommandInfo.#ctor(System.String,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            命令对象
+            </summary>
+            <param name="sqlText">SQL</param>
+            <param name="para">参数列表</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.CommandInfo.#ctor(System.String,MySql.Data.MySqlClient.MySqlParameter[],Common.Net.DbProvider.EffentNextType)">
+            <summary>
+            命令对象
+            </summary>
+            <param name="sqlText">SQL</param>
+            <param name="para">参数列表</param>
+            <param name="type"></param>
+        </member>
+        <member name="F:Common.Net.DbProvider.EffentNextType.None">
+            <summary>
+            对其他语句无任何影响 
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.EffentNextType.WhenHaveContine">
+            <summary>
+            当前语句必须为"select count(1) from .."格式，如果存在则继续执行，不存在回滚事务
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.EffentNextType.WhenNoHaveContine">
+            <summary>
+            当前语句必须为"select count(1) from .."格式，如果不存在则继续执行，存在回滚事务
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.EffentNextType.ExcuteEffectRows">
+            <summary>
+            当前语句影响到的行数必须大于0，否则回滚事务
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.EffentNextType.SolicitationEvent">
+            <summary>
+            引发事件-当前语句必须为"select count(1) from .."格式，如果不存在则继续执行，存在回滚事务
+            </summary>
+        </member>
+        <member name="T:Common.Net.DbProvider.DataBase">
+            <summary>
+            数据库连接枚举
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.DataBase.None">
+            <summary>
+            无
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.DataBase.CResource">
+            <summary>
+            数据库一 192.168.200.103
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.DataBase.Jg">
+            <summary>
+            数据库二 192.168.200.72
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.DataBase.ZYTConnString">
+            <summary>
+            数据库三
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.DataBase.CResourceKF">
+            <summary>
+            资源线下测试数据库 192.168.180.186
+            </summary>
+        </member>
+        <member name="T:Common.Net.DbProvider.MySQLHelper">
+            <summary>
+            MySQL数据访问抽象基础类
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.MySQLHelper.connectionString">
+            <summary>
+            数据库连接字符串
+            </summary>	
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.MySelfSqlConnection(Common.Net.DbProvider.DataBase)">
+            <summary>
+            自定义数据库连接
+            </summary>
+            <param name="db">数据库名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.GetMaxID(System.String,System.String)">
+            <summary>
+            得到最大值,使用该方法有线程安全问题 使用LAST_INSERT_ID
+            </summary>
+            <param name="FieldName">字段</param>
+            <param name="TableName">表名</param>
+            <returns>增长后的值</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.Exists(System.String)">
+            <summary>
+            判断记录是否存在
+            </summary>
+            <param name="SQLString">SQL</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.Exists(System.String,Common.Net.DbProvider.DataBase,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            判断记录是否存在（基于MySqlParameter）
+            </summary>
+            <param name="SQLString"></param>
+            <param name="cmdParms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSql(System.String,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行SQL语句，返回影响的记录数
+            </summary>
+            <param name="SQLString">SQL语句</param>
+            <param name="db">数据库配置字符</param>
+            <returns>影响的记录数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlTran(System.Collections.Generic.List{System.String},Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">多条SQL语句</param>		
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlTran(System.Collections.Generic.List{System.String},System.Collections.Generic.List{MySql.Data.MySqlClient.MySqlParameter[]},Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">多条SQL语句</param>
+            <param name="SqlParameterList">多条SQL参数</param>
+            <returns>影响的行数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlInsertImg(System.String,System.Byte[])">
+            <summary>
+            向数据库里插入图像格式的字段(和上面情况类似的另一种实例)
+            </summary>
+            <param name="SQLString">SQL语句</param>
+            <param name="fs">图像字节,数据库的字段类型为image的情况</param>
+            <returns>影响的记录数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteReader(System.String)">
+            <summary>
+            执行查询语句，返回MySqlDataReader ( 注意：调用该方法后，一定要对MySqlDataReader进行Close )
+            </summary>
+            <param name="SQLString">查询语句</param>
+            <returns>MySqlDataReader</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.FindDataSet(System.String)">
+            <summary>
+            执行查询语句，返回DataSet
+            </summary>
+            <param name="SQLString">查询语句</param>
+            <returns>DataSet</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.FindDataSet(System.String,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行查询语句，返回DataSet
+            </summary>
+            <param name="SQLString">查询语句</param>
+            <param name="db">数据库连接字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.FindDataSet(System.String,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            执行带参数查询语句，返回DataSet
+            </summary>
+            <param name="SQLString">SQL</param>
+            <param name="cmdParms">参数列表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.FindDataSet(System.String,System.Collections.Generic.List{MySql.Data.MySqlClient.MySqlParameter})">
+            <summary>
+            执行查询语句，返回DataSet
+            </summary>
+            <param name="SQLString">查询语句</param>
+            <returns>DataSet</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteNonQuery(System.String,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            返回影响的记录数
+            </summary>
+            <param name="SQLString">SQL语句</param>
+            <returns>影响的记录数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteNonQuery(System.String,System.Collections.Generic.List{MySql.Data.MySqlClient.MySqlParameter},System.Data.CommandType)">
+            <summary>
+            执行带参数返回受影响的行数Sql
+            </summary>
+            <param name="SQLString">SQL</param>
+            <param name="parameters">参数</param>
+            <param name="commandtext">执行类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlTran(System.Collections.Hashtable)">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的MySqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlTran(System.Collections.Generic.List{Common.Net.DbProvider.CommandInfo})">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的MySqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlTranWithIndentity(System.Collections.Generic.List{Common.Net.DbProvider.CommandInfo})">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的MySqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlTranWithIndentity(System.Collections.Hashtable)">
+            <summary>
+            执行多条SQL语句.实现数据库事务.
+            </summary>
+            <param name="SqlList">SQL语句的哈希表（key为sql语句，value是该语句的MySqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteSqlTranWithIndentity(System.Collections.Hashtable,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行多条SQL语句.实现数据库事务.
+            </summary>
+            <param name="SqlList">SQL语句的哈希表（key为sql语句，value是该语句的MySqlParameter[]）</param>
+            <param name="db">数据库名称</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteScalar(System.String,Common.Net.DbProvider.DataBase)">
+            <summary>
+            获取首行首列
+            </summary>
+            <param name="SQLString">计算查询结果语句</param>
+            <returns>查询结果（object）</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteScalar(System.String,Common.Net.DbProvider.DataBase,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            获取首行首列
+            </summary>
+            <param name="SQLString">>SQL</param>
+            <param name="db">数据库</param>
+            <param name="cmdParms">参数列表</param>
+            <returns>返回结果</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ExecuteReader(System.String,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            执行查询语句，返回MySqlDataReader ( 注意：调用该方法后，一定要对MySqlDataReader进行Close )
+            </summary>
+            <param name="strSQL">查询语句</param>
+            <returns>MySqlDataReader</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.PrepareCommand(MySql.Data.MySqlClient.MySqlCommand,MySql.Data.MySqlClient.MySqlConnection,MySql.Data.MySqlClient.MySqlTransaction,System.String,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            填充Command参数
+            </summary>
+            <param name="cmd">SqlCommand</param>
+            <param name="conn">SqlConnection</param>
+            <param name="trans">SqlTransaction</param>
+            <param name="cmdText">Sql</param>
+            <param name="cmdParms">参数</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.FindList``1(System.String,System.Func{MySql.Data.MySqlClient.MySqlDataReader,``0},System.Collections.Generic.List{MySql.Data.MySqlClient.MySqlParameter},System.Data.CommandType,Common.Net.DbProvider.DataBase)">
+            <summary>
+            返回数据集合
+            </summary>
+            <typeparam name="T">实体</typeparam>
+            <param name="SQLString">SQL</param>
+            <param name="readFunc">FUN</param>
+            <param name="parameters">参数</param>
+            <param name="commandtext">执行类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.Find``1(System.String,System.Func{MySql.Data.MySqlClient.MySqlDataReader,``0},System.Collections.Generic.List{MySql.Data.MySqlClient.MySqlParameter},System.Data.CommandType,Common.Net.DbProvider.DataBase)">
+            <summary>
+            返回一个实例对象
+            </summary>
+            <typeparam name="T">返回对象</typeparam>
+            <param name="SQLString">Sql语句</param>
+            <param name="readFunc">DataReader</param>
+            <param name="parameters">参数列表</param>
+            <param name="commandtext">命令类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.FindList(System.String,System.Action{MySql.Data.MySqlClient.MySqlDataReader},System.Collections.Generic.List{MySql.Data.MySqlClient.MySqlParameter},System.Data.CommandType,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行带参数的SQL语句
+            </summary>
+            <param name="SQLString">Sql语句</param>
+            <param name="readFunc">DataReader</param>
+            <param name="parameters">参数列表</param>
+            <param name="commandtext">命令类型</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.ConvertSql(System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.Data.IDbDataParameter})">
+            <summary>
+            生成更新语句
+            </summary>
+            <param name="updateDictionary">要更新字段的字典</param>
+            <param name="dbDataParameters">参数列表</param>
+            <returns></returns>
+        </member>
+        <member name="F:Common.Net.DbProvider.MySQLHelper.BatchSize">
+            <summary>
+            批量操作每批次记录数
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.MySQLHelper.CommandTimeOut">
+            <summary>
+            超时时间
+            </summary>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.BulkInsert(System.Data.DataTable,Common.Net.DbProvider.DataBase)">
+             <summary>
+            大批量数据插入,返回成功插入行数
+             </summary>
+             <param name="connectionString">数据库连接字符串</param>
+             <param name="table">数据表</param>
+             <returns>返回成功插入行数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.DataTableToCsv(System.Data.DataTable)">
+             <summary>
+            将DataTable转换为标准的CSV
+             </summary>
+             <param name="table">数据表</param>
+             <returns>返回标准的CSV</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.BatchUpdate(System.Data.DataTable,Common.Net.DbProvider.DataBase)">
+             <summary>
+            使用MySqlDataAdapter批量更新数据
+             </summary>
+             <param name="connectionString">数据库连接字符串</param>
+             <param name="table">数据表</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.GetPageTable(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            高效主键分页--适用于大数据
+            </summary>
+            <param name="conn">数据库连接</param>
+            <param name="fieldList">需查询字段列表逗号分隔</param>
+            <param name="tableList">表列表逗号分隔</param>
+            <param name="whereList">where条件 不用带where关键字没有请写"",</param>
+            <param name="keyList">主键</param>
+            <param name="orderList">排序列表</param>
+            <param name="pageSize">每页数量</param>
+            <param name="pageIndex">第几页</param>
+            <param name="_paras">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.GetPageTable(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            简单分页--适用于少量数据
+            </summary>
+            <param name="conn">连接</param>
+            <param name="fieldList">查询字段列表</param>
+            <param name="tableList">表列表</param>
+            <param name="whereList">where条件</param>
+            <param name="orderList">排序条件</param>
+            <param name="pageSize">每页大小</param>
+            <param name="pageIndex">第几页</param>
+            <param name="_paras">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.GetPageTable(Common.Net.DbProvider.DataBase,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32@,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            高效主键分页--适用于大数据
+            </summary>
+            <param name="conn">数据库连接</param>
+            <param name="fieldList">需查询字段列表逗号分隔</param>
+            <param name="tableList">表列表逗号分隔</param>
+            <param name="whereList">where条件 不用带where关键字没有请写"",</param>
+            <param name="keyList">主键</param>
+            <param name="orderList">排序列表</param>
+            <param name="pageSize">每页数量</param>
+            <param name="pageIndex">第几页</param>
+            <param name="_paras">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.MySQLHelper.GetPageTable(Common.Net.DbProvider.DataBase,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32@,MySql.Data.MySqlClient.MySqlParameter[])">
+            <summary>
+            简单分页--适用于少量数据
+            </summary>
+            <param name="conn">连接</param>
+            <param name="fieldList">查询字段列表</param>
+            <param name="tableList">表列表</param>
+            <param name="whereList">where条件</param>
+            <param name="orderList">排序条件</param>
+            <param name="pageSize">每页大小</param>
+            <param name="pageIndex">第几页</param>
+            <param name="allct">总行数</param>
+            <param name="_paras">参数</param>
+            <returns></returns>
+        </member>
+        <member name="T:Common.Net.DbProvider.SQLHelper">
+            <summary>
+            SQLHelper数据访问抽象基础类
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.SQLHelper.connectionString">
+            <summary>
+            数据库连接字符串（未用）
+            </summary>	
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.MySelfSqlConnection(Common.Net.DbProvider.DataBase)">
+            <summary>
+            自定义数据库连接
+            </summary>
+            <param name="db">数据库名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.GetMaxID(System.String,System.String)">
+            <summary>
+            得到最大值,使用该方法有线程安全问题 使用LAST_INSERT_ID
+            </summary>
+            <param name="FieldName">字段</param>
+            <param name="TableName">表名</param>
+            <returns>增长后的值</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.Exists(System.String)">
+            <summary>
+            判断记录是否存在
+            </summary>
+            <param name="SQLString">SQL</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.Exists(System.String,Common.Net.DbProvider.DataBase,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            判断记录是否存在（基于SqlParameter）
+            </summary>
+            <param name="SQLString"></param>
+            <param name="cmdParms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteNonQuery(System.String,System.String)">
+            <summary>
+            执行SQL语句，返回影响的记录数
+            </summary>
+            <param name="commandText">SQL语句</param>
+            <param name="connStr">数据库配置字符</param>
+            <returns>影响的记录数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteNonQuery(System.String,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行SQL语句，返回影响的记录数
+            </summary>
+            <param name="commandText">SQL语句</param>
+            <param name="db">数据库配置字符</param>
+            <returns>影响的记录数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlTran(System.Collections.Generic.List{System.String},Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="commandTexts">Sql列表</param>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlTran(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Data.SqlClient.SqlParameter[]},Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="commandTexts">多条SQL语句</param>
+            <param name="SqlParameterList">多条SQL参数</param>
+            <returns>影响的行数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlInsertImg(System.String,System.Byte[])">
+            <summary>
+            向数据库里插入图像格式的字段(和上面情况类似的另一种实例)
+            </summary>
+            <param name="commandText">SQL语句</param>
+            <param name="fs">图像字节,数据库的字段类型为image的情况</param>
+            <returns>影响的记录数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteReader(System.String)">
+            <summary>
+            执行查询语句，返回SqlDataReader ( 注意：调用该方法后，一定要对SqlDataReader进行Close )
+            </summary>
+            <param name="SQLString">查询语句</param>
+            <returns>SqlDataReader</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteReader(System.String,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行查询语句，返回SqlDataReader
+            </summary>
+            <param name="SQLString">查询语句</param>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.FindDataSet(System.String,System.String)">
+            <summary>
+            执行查询语句，返回DataSet
+            </summary>
+            <param name="commandText">查询语句</param>
+            <param name="connStr">数据库连接字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.FindDataSet(System.String,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行查询语句，返回DataSet
+            </summary>
+            <param name="commandText">查询语句</param>
+            <param name="db">数据库连接字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.FindDataSet(System.String,Common.Net.DbProvider.DataBase,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            执行带参数查询语句，返回DataSet
+            </summary>
+            <param name="commandText">SQL</param>
+            <param name="cmdParms">参数列表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.FindDataSet(System.String,System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行查询语句，返回DataSet
+            </summary>
+            <param name="commandText">查询语句</param>
+            <returns>DataSet</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteNonQuery(System.String,Common.Net.DbProvider.DataBase,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            返回影响的记录数
+            </summary>
+            <param name="SQLString">SQL语句</param>
+            <returns>影响的记录数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteNonQuery(System.String,System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},System.Data.CommandType)">
+            <summary>
+            执行带参数返回受影响的行数Sql
+            </summary>
+            <param name="SQLString">SQL</param>
+            <param name="parameters">参数</param>
+            <param name="commandtext">执行类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlTran(System.Collections.Hashtable,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlTran(System.Collections.Generic.List{Common.Net.DbProvider.CommandInfo})">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlTranWithIndentity(System.Collections.Generic.List{Common.Net.DbProvider.CommandInfo})">
+            <summary>
+            执行多条SQL语句，实现数据库事务。
+            </summary>
+            <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlTranWithIndentity(System.Collections.Hashtable)">
+            <summary>
+            执行多条SQL语句.实现数据库事务.
+            </summary>
+            <param name="SqlList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteSqlTranWithIndentity(System.Collections.Hashtable,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行多条SQL语句.实现数据库事务.
+            </summary>
+            <param name="SqlList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
+            <param name="db">数据库名称</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteScalar(System.String,Common.Net.DbProvider.DataBase)">
+            <summary>
+            获取首行首列
+            </summary>
+            <param name="SQLString">计算查询结果语句</param>
+            <returns>查询结果（object）</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ExecuteScalar(System.String,Common.Net.DbProvider.DataBase,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            获取首行首列
+            </summary>
+            <param name="SQLString">>SQL</param>
+            <param name="db">数据库</param>
+            <param name="cmdParms">参数列表</param>
+            <returns>返回结果</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.PrepareCommand(System.Data.SqlClient.SqlCommand,System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            填充Command参数
+            </summary>
+            <param name="cmd">SqlCommand</param>
+            <param name="conn">SqlConnection</param>
+            <param name="trans">SqlTransaction</param>
+            <param name="cmdText">Sql</param>
+            <param name="cmdParms">参数</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.FindList``1(System.String,System.Func{System.Data.SqlClient.SqlDataReader,``0},System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},System.Data.CommandType,Common.Net.DbProvider.DataBase)">
+            <summary>
+            返回数据集合
+            </summary>
+            <typeparam name="T">实体</typeparam>
+            <param name="SQLString">SQL</param>
+            <param name="readFunc">FUN</param>
+            <param name="parameters">参数</param>
+            <param name="commandtext">执行类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.Find``1(System.String,System.Func{System.Data.SqlClient.SqlDataReader,``0},System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},System.Data.CommandType,Common.Net.DbProvider.DataBase)">
+            <summary>
+            返回一个实例对象
+            </summary>
+            <typeparam name="T">返回对象</typeparam>
+            <param name="SQLString">Sql语句</param>
+            <param name="readFunc">DataReader</param>
+            <param name="parameters">参数列表</param>
+            <param name="commandtext">命令类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.Find``1(System.String,System.Func{System.Data.SqlClient.SqlDataReader,``0},System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},Common.Net.DbProvider.DataBase)">
+            <summary>
+            返回一个实例对象
+            </summary>
+            <typeparam name="T">返回对象</typeparam>
+            <param name="SQLString">Sql语句</param>
+            <param name="readFunc">DataReader</param>
+            <param name="parameters">参数列表</param>
+            <param name="db">数据库名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.FindList(System.String,System.Action{System.Data.SqlClient.SqlDataReader},System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},System.Data.CommandType,Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行带参数的SQL语句
+            </summary>
+            <param name="SQLString">Sql语句</param>
+            <param name="readFunc">DataReader</param>
+            <param name="parameters">参数列表</param>
+            <param name="commandtext">命令类型</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.FindList(System.String,System.Action{System.Data.SqlClient.SqlDataReader},System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},Common.Net.DbProvider.DataBase)">
+            <summary>
+            执行带参数的SQL语句
+            </summary>
+            <param name="SQLString">Sql语句</param>
+            <param name="readFunc">DataReader</param>
+            <param name="parameters">参数列表</param>
+            <param name="db">命令类型</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.ConvertSql(System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.Data.IDbDataParameter})">
+            <summary>
+            生成更新语句
+            </summary>
+            <param name="updateDictionary">要更新字段的字典</param>
+            <param name="dbDataParameters">参数列表</param>
+            <returns></returns>
+        </member>
+        <member name="F:Common.Net.DbProvider.SQLHelper.BatchSize">
+            <summary>
+            批量操作每批次记录数
+            </summary>
+        </member>
+        <member name="F:Common.Net.DbProvider.SQLHelper.CommandTimeOut">
+            <summary>
+            超时时间
+            </summary>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.BulkInsert(System.Data.DataTable,Common.Net.DbProvider.DataBase)">
+             <summary>
+            大批量数据插入,返回成功插入行数
+             </summary>
+             <param name="connectionString">数据库连接字符串</param>
+             <param name="table">数据表</param>
+             <returns>返回成功插入行数</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.DataTableToCsv(System.Data.DataTable)">
+             <summary>
+            将DataTable转换为标准的CSV
+             </summary>
+             <param name="table">数据表</param>
+             <returns>返回标准的CSV</returns>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.BatchUpdate(System.Data.DataTable,Common.Net.DbProvider.DataBase)">
+             <summary>
+            使用SqlDataAdapter批量更新数据
+             </summary>
+             <param name="connectionString">数据库连接字符串</param>
+             <param name="table">数据表</param>
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.BulkCopy(System.Data.DataTable,Common.Net.DbProvider.DataBase)">
+            <summary> 
+            大批量插入数据(2000每批次) 
+            已采用整体事物控制 
+            </summary> 
+            <param name="connString">数据库链接字符串</param> 
+            <param name="tableName">数据库服务器上目标表名</param> 
+            <param name="dt">含有和目标数据库表结构完全一致(所包含的字段名完全一致即可)的DataTable</param> 
+        </member>
+        <member name="M:Common.Net.DbProvider.SQLHelper.BulkUpdate(System.Data.DataTable,Common.Net.DbProvider.DataBase)">
+            <summary> 
+            批量更新数据(每批次5000) 
+            若只是需要大批量插入数据使用bcp是最好的，若同时需要插入、删除、更新建议使用SqlDataAdapter我测试过有很高的效率，一般情况下这两种就满足需求了 
+            </summary> 
+            <param name="connString">数据库链接字符串</param> 
+            <param name="dt"></param> 
+        </member>
+    </members>
+</doc>
