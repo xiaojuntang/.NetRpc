@@ -7,6 +7,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Zxxk.Ques.Business;
 
 namespace NetWCF.Client
 {
@@ -18,58 +19,52 @@ namespace NetWCF.Client
 
         static void Main(string[] args)
         {
-
-            int a = 5;
-
-            Task.Run(() =>
-            {
-                a = 10;
-            });
-            var d = "";
-            //第一种方式开启
-            var task1 = new Task(() =>
-                     {
-                         a = 9;
-                     });
-            task1.Start();
-            var c = "";
-
             try
             {
                 NetTcpBinding tcpBinding = new NetTcpBinding();
-                EndpointAddress tcpAddr = new EndpointAddress("net.tcp://192.168.187.1:8083/Hello");
+                EndpointAddress tcpAddr = new EndpointAddress("net.tcp://192.168.1.139:8085/QuesManager");
                 tcpBinding.Security.Mode = SecurityMode.None;//与服务端保持一致
-                IHello proxy = new ChannelFactory<IHello>(tcpBinding, tcpAddr).CreateChannel();
-                int index = 1;
+                IQuesManager proxy = new ChannelFactory<IQuesManager>(tcpBinding, tcpAddr).CreateChannel();
+                //int index = 1;
                 for (int i = 0; i < 20000; i++)
                 {
                     try
                     {
-                        Task.Factory.StartNew((obj) =>
-                        {
-                            try
-                            {
-
-
-                                Console.WriteLine("第 {0} 个请求开始。。。", obj);
-                                Parallel.For(0, 3, o =>
-                                {
-                                    RPCHelloClient.Say(index++.ToString(), Thread.CurrentThread.ManagedThreadId.ToString());
-                                });
-
-
-                                Console.WriteLine("第 {0} 个请求结束。。。", obj);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
-                        }, i);
+                        proxy.GetString(i.ToString());
                     }
                     catch (Exception ex)
                     {
+                        Thread.Sleep(2000);
                         Console.WriteLine(ex.Message);
                     }
+      
+                    //try
+                    //{
+                    //    Task.Factory.StartNew((obj) =>
+                    //    {
+                    //        try
+                    //        {
+
+
+                    //            Console.WriteLine("第 {0} 个请求开始。。。", obj);
+                    //            Parallel.For(0, 3, o =>
+                    //            {
+                    //                RPCHelloClient.Say(index++.ToString(), Thread.CurrentThread.ManagedThreadId.ToString());
+                    //            });
+
+
+                    //            Console.WriteLine("第 {0} 个请求结束。。。", obj);
+                    //        }
+                    //        catch (Exception ex)
+                    //        {
+                    //            Console.WriteLine(ex.Message);
+                    //        }
+                    //    }, i);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    Console.WriteLine(ex.Message);
+                    //}
                 }
 
                 Console.Read();

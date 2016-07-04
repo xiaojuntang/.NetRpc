@@ -55,6 +55,10 @@
       <Project>{ef2adc23-fc17-48fd-84c6-91ecad0bebbc}</Project>
       <Name>NetWCF.Impl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zxxk.Ques.Business\Zxxk.Ques.Business.csproj">
+      <Project>{4c009917-9d31-4e99-b010-948667117299}</Project>
+      <Name>Zxxk.Ques.Business</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

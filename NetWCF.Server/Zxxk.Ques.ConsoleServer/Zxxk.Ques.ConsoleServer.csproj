@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Zxxk.Ques.ConsoleServer</RootNamespace>
     <AssemblyName>Zxxk.Ques.ConsoleServer</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -54,6 +55,10 @@
     <ProjectReference Include="..\Zxxk.Ques.Business\Zxxk.Ques.Business.csproj">
       <Project>{4c009917-9d31-4e99-b010-948667117299}</Project>
       <Name>Zxxk.Ques.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zxxk.Ques.Core\Zxxk.Ques.Core.csproj">
+      <Project>{5042651f-c428-4feb-b8a5-566d6b51497c}</Project>
+      <Name>Zxxk.Ques.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

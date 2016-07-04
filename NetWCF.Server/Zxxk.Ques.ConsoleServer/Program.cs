@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Zxxk.Ques.Business;
+using Zxxk.Ques.Core;
 
 namespace Zxxk.Ques.ConsoleServer
 {
@@ -12,6 +13,11 @@ namespace Zxxk.Ques.ConsoleServer
     {
         static void Main(string[] args)
         {
+            using (ZxxkServiceHost host = new ZxxkServiceHost())
+            {
+                host.Open();      
+                Console.ReadLine();
+            }
         }
     }
 
@@ -24,21 +30,14 @@ namespace Zxxk.Ques.ConsoleServer
 
         public ZxxkServiceHost()
         {
-            string ipAndPort = "192.168.187.1:8083";
+            string ipAndPort = "192.168.1.139:8085";
             //定义一个基地址
             string baseAddress = string.Format("net.tcp://{0}", ipAndPort);
             //通讯协议
             NetTcpBinding netTcpBinding = new NetTcpBinding();
             netTcpBinding.Security.Mode = SecurityMode.None;
             serviceHost = new ServiceHost(typeof(QuesManager), new Uri[] { new Uri(baseAddress) });
-            serviceHost.AddServiceEndpoint(typeof(IQuesManager), netTcpBinding, "QuesManager");  
-            //if (serviceHost.Description.Behaviors.Find<ServiceMetadataBehavior>() == null)
-            //{
-            //    ServiceMetadataBehavior metadata = new ServiceMetadataBehavior();
-            //    metadata.HttpGetEnabled = true;
-            //    metadata.HttpGetUrl = new Uri("http://192.168.187.1:8085/Hello/metadata");
-            //    serviceHost.Description.Behaviors.Add(metadata);
-            //}
+            serviceHost.AddServiceEndpoint(typeof(IQuesManager), netTcpBinding, "QuesManager");
         }
 
         /// <summary>
