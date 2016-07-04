@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zxxk.Ques.Core", "Zxxk.Ques
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zxxk.Ques.Entites", "Zxxk.Ques.Entites\Zxxk.Ques.Entites.csproj", "{FF0161B0-BD85-4E8D-B792-2AB2FB09F4B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zxxk.Ques.ConsoleServer", "Zxxk.Ques.ConsoleServer\Zxxk.Ques.ConsoleServer.csproj", "{AC720EA4-29E3-4569-8461-AF1B7B48836F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{FF0161B0-BD85-4E8D-B792-2AB2FB09F4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF0161B0-BD85-4E8D-B792-2AB2FB09F4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF0161B0-BD85-4E8D-B792-2AB2FB09F4B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC720EA4-29E3-4569-8461-AF1B7B48836F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC720EA4-29E3-4569-8461-AF1B7B48836F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC720EA4-29E3-4569-8461-AF1B7B48836F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC720EA4-29E3-4569-8461-AF1B7B48836F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,5 +81,6 @@ Global
 		{0006D48D-978E-4FE0-9A21-08B896938E5D} = {993320F1-B746-44C3-A8D2-A768CCD49A41}
 		{5042651F-C428-4FEB-B8A5-566D6B51497C} = {993320F1-B746-44C3-A8D2-A768CCD49A41}
 		{FF0161B0-BD85-4E8D-B792-2AB2FB09F4B9} = {993320F1-B746-44C3-A8D2-A768CCD49A41}
+		{AC720EA4-29E3-4569-8461-AF1B7B48836F} = {993320F1-B746-44C3-A8D2-A768CCD49A41}
 	EndGlobalSection
 EndGlobal

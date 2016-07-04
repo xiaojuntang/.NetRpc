@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zxxk.Ques.Core
+namespace Zxxk.Ques.Business
 {
-    public class Class1
+    public interface IQuesManager
     {
     }
 }

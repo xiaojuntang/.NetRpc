@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zxxk.Ques.Business
 {
-    public class QuesManager
+    public partial class QuesManager : IQuesManager
     {
     }
 }
